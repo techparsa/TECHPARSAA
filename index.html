@@ -1,0 +1,980 @@
+<!DOCTYPE html>
+<html dir="rtl" lang="fa-IR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>تک پارسا - سفارش سایت و ربات تلگرام</title>
+  <link rel="icon" href="https://lh3.googleusercontent.com/a/ACg8ocInWWhyA9C-xkdDxP3guSYCQ3mAtq-0jnSd4GMt_PGrfMavViU=s288-c-no" type="image/png">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <style>
+    /* استایل‌های عمومی */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+    
+    :root {
+      --primary: #2c3e50;
+      --secondary: #3498db;
+      --accent: #e74c3c;
+      --light: #ecf0f1;
+      --dark: #2c3e50;
+      --text: #333;
+      --text-light: #7f8c8d;
+    }
+    
+    body {
+      background-color: #f9f9f9;
+      color: var(--text);
+      line-height: 1.6;
+    }
+    
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 20px;
+    }
+    
+    /* هدر */
+    header {
+      background: linear-gradient(135deg, var(--primary) 0%, var(--dark) 100%);
+      color: white;
+      padding: 15px 0;
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    }
+    
+    nav ul {
+      display: flex;
+      justify-content: center;
+      list-style: none;
+      flex-wrap: wrap;
+    }
+    
+    nav ul li {
+      margin: 0 10px;
+    }
+    
+    nav ul li a {
+      color: white;
+      text-decoration: none;
+      padding: 10px 15px;
+      border-radius: 5px;
+      transition: all 0.3s ease;
+      font-weight: 500;
+    }
+    
+    nav ul li a:hover, nav ul li a.active {
+      background-color: rgba(255, 255, 255, 0.2);
+    }
+    
+    .top-left {
+      position: absolute;
+      top: 15px;
+      left: 20px;
+      display: flex;
+      gap: 10px;
+    }
+    
+    .btn-icon {
+      color: white;
+      background: rgba(255, 255, 255, 0.2);
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-decoration: none;
+      transition: all 0.3s ease;
+    }
+    
+    .btn-icon:hover {
+      background: rgba(255, 255, 255, 0.3);
+      transform: scale(1.1);
+    }
+    
+    /* نوار جستجو */
+    .search-container {
+      position: relative;
+      max-width: 500px;
+      margin: 15px auto 0;
+    }
+    
+    .search-box {
+      width: 100%;
+      padding: 12px 50px 12px 20px;
+      border: none;
+      border-radius: 30px;
+      background: rgba(255, 255, 255, 0.9);
+      font-size: 16px;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    }
+    
+    .search-btn {
+      position: absolute;
+      left: 10px;
+      top: 50%;
+      transform: translateY(-50%);
+      background: none;
+      border: none;
+      color: var(--primary);
+      cursor: pointer;
+      font-size: 18px;
+    }
+    
+    .search-results {
+      position: absolute;
+      top: 100%;
+      left: 0;
+      right: 0;
+      background: white;
+      border-radius: 0 0 10px 10px;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+      display: none;
+      z-index: 100;
+    }
+    
+    .search-results.active {
+      display: block;
+    }
+    
+    .search-results a {
+      display: block;
+      padding: 10px 15px;
+      text-decoration: none;
+      color: var(--text);
+      border-bottom: 1px solid #eee;
+    }
+    
+    .search-results a:hover {
+      background: #f5f5f5;
+    }
+    
+    /* بخش هیرو */
+    .hero {
+      background: linear-gradient(135deg, #3498db 0%, #2c3e50 100%);
+      color: white;
+      padding: 80px 0;
+      text-align: center;
+    }
+    
+    .hero img {
+      width: 150px;
+      height: 150px;
+      border-radius: 50%;
+      border: 5px solid rgba(255, 255, 255, 0.3);
+      margin-bottom: 20px;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+    }
+    
+    .hero-text h1 {
+      font-size: 2.5rem;
+      margin-bottom: 15px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+    }
+    
+    .verify-icon {
+      width: 24px;
+      height: 24px;
+    }
+    
+    .hero-text p {
+      font-size: 1.2rem;
+      max-width: 700px;
+      margin: 0 auto;
+    }
+    
+    .hero-text p span {
+      color: #f1c40f;
+      font-weight: bold;
+    }
+    
+    /* بخش‌های اصلی */
+    section {
+      padding: 80px 0;
+    }
+    
+    .section-title {
+      text-align: center;
+      margin-bottom: 50px;
+    }
+    
+    .section-title h2 {
+      font-size: 2.2rem;
+      color: var(--primary);
+      position: relative;
+      display: inline-block;
+      padding-bottom: 15px;
+    }
+    
+    .section-title h2::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 80px;
+      height: 3px;
+      background: var(--secondary);
+    }
+    
+    /* درباره من */
+    .about-content {
+      display: flex;
+      align-items: center;
+      gap: 40px;
+      flex-wrap: wrap;
+    }
+    
+    .about-text {
+      flex: 1;
+      min-width: 300px;
+    }
+    
+    .about-text h3 {
+      font-size: 1.8rem;
+      margin-bottom: 20px;
+      color: var(--primary);
+    }
+    
+    .about-text p {
+      margin-bottom: 15px;
+      color: var(--text-light);
+    }
+    
+    .about-image {
+      flex: 1;
+      min-width: 300px;
+      text-align: center;
+    }
+    
+    .about-image img {
+      max-width: 100%;
+      border-radius: 10px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    }
+    
+    /* نمونه کارها */
+    .projects-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 30px;
+    }
+    
+    .project-card {
+      background: white;
+      border-radius: 10px;
+      overflow: hidden;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+      transition: transform 0.3s ease;
+    }
+    
+    .project-card:hover {
+      transform: translateY(-10px);
+    }
+    
+    .project-image {
+      height: 200px;
+      overflow: hidden;
+    }
+    
+    .project-image img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.5s ease;
+    }
+    
+    .project-card:hover .project-image img {
+      transform: scale(1.1);
+    }
+    
+    .project-info {
+      padding: 20px;
+    }
+    
+    .project-info h3 {
+      margin-bottom: 10px;
+      color: var(--primary);
+    }
+    
+    .project-info p {
+      color: var(--text-light);
+      margin-bottom: 15px;
+    }
+    
+    .project-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+    
+    .project-tags span {
+      background: #e0e0e0;
+      padding: 5px 10px;
+      border-radius: 20px;
+      font-size: 0.8rem;
+      color: var(--text-light);
+    }
+    
+    /* تماس با ما */
+    .contact-container {
+      display: flex;
+      gap: 40px;
+      flex-wrap: wrap;
+    }
+    
+    .contact-info {
+      flex: 1;
+      min-width: 300px;
+    }
+    
+    .contact-item {
+      display: flex;
+      align-items: flex-start;
+      margin-bottom: 25px;
+    }
+    
+    .contact-icon {
+      background: var(--secondary);
+      color: white;
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-left: 15px;
+      flex-shrink: 0;
+    }
+    
+    .contact-details h4 {
+      margin-bottom: 5px;
+      color: var(--primary);
+    }
+    
+    .contact-details p {
+      color: var(--text-light);
+    }
+    
+    .contact-form {
+      flex: 1;
+      min-width: 300px;
+      background: white;
+      padding: 30px;
+      border-radius: 10px;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    }
+    
+    .form-group {
+      margin-bottom: 20px;
+    }
+    
+    .form-group label {
+      display: block;
+      margin-bottom: 8px;
+      color: var(--primary);
+      font-weight: 500;
+    }
+    
+    .form-control {
+      width: 100%;
+      padding: 12px 15px;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+      font-size: 16px;
+      transition: border 0.3s ease;
+    }
+    
+    .form-control:focus {
+      border-color: var(--secondary);
+      outline: none;
+    }
+    
+    textarea.form-control {
+      min-height: 150px;
+      resize: vertical;
+    }
+    
+    .btn {
+      display: inline-block;
+      background: var(--secondary);
+      color: white;
+      padding: 12px 30px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 16px;
+      font-weight: 500;
+      transition: all 0.3s ease;
+      text-decoration: none;
+    }
+    
+    .btn:hover {
+      background: #2980b9;
+      transform: translateY(-3px);
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    }
+    
+    .btn-block {
+      display: block;
+      width: 100%;
+    }
+    
+    /* فروشگاه */
+    .pricing-cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 30px;
+    }
+    
+    .pricing-card {
+      background: white;
+      border-radius: 10px;
+      overflow: hidden;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+      text-align: center;
+      transition: transform 0.3s ease;
+      position: relative;
+    }
+    
+    .pricing-card:hover {
+      transform: translateY(-10px);
+    }
+    
+    .pricing-card.popular {
+      border: 2px solid var(--secondary);
+      transform: scale(1.05);
+    }
+    
+    .pricing-card.popular:hover {
+      transform: scale(1.05) translateY(-10px);
+    }
+    
+    .popular-badge {
+      position: absolute;
+      top: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      background: var(--secondary);
+      color: white;
+      padding: 5px 20px;
+      border-radius: 0 0 10px 10px;
+      font-size: 0.9rem;
+    }
+    
+    .pricing-header {
+      padding: 30px 20px;
+      background: var(--primary);
+      color: white;
+    }
+    
+    .pricing-header h3 {
+      font-size: 1.5rem;
+      margin-bottom: 10px;
+    }
+    
+    .price {
+      font-size: 2.5rem;
+      font-weight: bold;
+    }
+    
+    .price span {
+      font-size: 1rem;
+      font-weight: normal;
+    }
+    
+    .pricing-features {
+      padding: 30px 20px;
+    }
+    
+    .pricing-features ul {
+      list-style: none;
+    }
+    
+    .pricing-features li {
+      padding: 10px 0;
+      border-bottom: 1px solid #eee;
+      color: var(--text-light);
+    }
+    
+    .pricing-features li:last-child {
+      border-bottom: none;
+    }
+    
+    .pricing-features li i {
+      color: #2ecc71;
+      margin-left: 5px;
+    }
+    
+    .pricing-footer {
+      padding: 0 20px 30px;
+    }
+    
+    /* فوتر */
+    footer {
+      background: var(--dark);
+      color: white;
+      padding: 60px 0 30px;
+    }
+    
+    .footer-content {
+      display: flex;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 40px;
+      margin-bottom: 40px;
+    }
+    
+    .footer-section {
+      flex: 1;
+      min-width: 200px;
+    }
+    
+    .footer-section h4 {
+      font-size: 1.2rem;
+      margin-bottom: 20px;
+      position: relative;
+      padding-bottom: 10px;
+    }
+    
+    .footer-section h4::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      right: 0;
+      width: 50px;
+      height: 2px;
+      background: var(--secondary);
+    }
+    
+    .footer-section a {
+      display: block;
+      color: #bdc3c7;
+      text-decoration: none;
+      margin-bottom: 10px;
+      transition: color 0.3s ease;
+    }
+    
+    .footer-section a:hover {
+      color: white;
+    }
+    
+    footer > p {
+      text-align: center;
+      margin-bottom: 20px;
+      color: #bdc3c7;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 5px;
+      flex-wrap: wrap;
+    }
+    
+    .socials {
+      display: flex;
+      justify-content: center;
+      gap: 15px;
+      margin-top: 30px;
+    }
+    
+    .socials a {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 40px;
+      height: 40px;
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 50%;
+      color: white;
+      text-decoration: none;
+      transition: all 0.3s ease;
+    }
+    
+    .socials a:hover {
+      background: var(--secondary);
+      transform: translateY(-5px);
+    }
+    
+    /* ریسپانسیو */
+    @media (max-width: 768px) {
+      .hero-text h1 {
+        font-size: 2rem;
+      }
+      
+      .hero-text p {
+        font-size: 1rem;
+      }
+      
+      nav ul {
+        flex-direction: column;
+        align-items: center;
+      }
+      
+      nav ul li {
+        margin: 5px 0;
+      }
+      
+      .top-left {
+        position: static;
+        justify-content: center;
+        margin-top: 15px;
+      }
+      
+      .section-title h2 {
+        font-size: 1.8rem;
+      }
+      
+      .pricing-card.popular {
+        transform: scale(1);
+      }
+      
+      .pricing-card.popular:hover {
+        transform: translateY(-10px);
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="container">
+      <nav>
+        <ul>
+          <li><a href="#" class="active">صفحه اصلی</a></li>
+          <li><a href="#about">درباره من</a></li>
+          <li><a href="#projects">نمونه کارها</a></li>
+          <li><a href="#contact">تماس با ما</a></li>
+          <li><a href="#shop">خرید</a></li>
+        </ul>
+      </nav>
+      
+      <!-- نوار جستجو -->
+      <div class="search-container">
+        <input type="text" class="search-box" placeholder="جستجو در سایت...">
+        <button class="search-btn"><i class="fas fa-search"></i></button>
+        <div class="search-results" id="searchResults"></div>
+      </div>
+      
+      <div class="top-left">
+        <a href="site-11 ورودی.html" class="btn-icon">
+          <i class="fa-solid fa-user"></i>
+        </a>
+        <a href="#" class="btn-icon" id="menuBtn">
+          <i class="fa-solid fa-bars"></i>
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <!-- بخش هیرو -->
+  <section class="hero">
+    <div class="container">
+      <img src="https://lh3.googleusercontent.com/a/ACg8ocInWWhyA9C-xkdDxP3guSYCQ3mAtq-0jnSd4GMt_PGrfMavViU=s288-c-no" alt="ربات تک پارسا">
+      <div class="hero-text">
+        <div class="hero-title">
+          <h1>
+            تک پارسا - tech parsa
+           
+          </h1>
+        </div>
+        <p>جهت سفارش سایت و راهنمایی و ساخت ربات‌های تلگرامی این پنل طراحی شده <span>به سایت ما خوش آمدید</span></p>
+      </div>
+    </div>
+  </section>
+
+  <!-- درباره من -->
+  <section id="about">
+    <div class="container">
+      <div class="section-title">
+        <h2>درباره من</h2>
+      </div>
+      <div class="about-content">
+        <div class="about-text">
+          <h3>سلام، (محمد جعفر افرازه)من سازنده این سایت هستم</h3>
+          <p>توسعه‌دهنده وب و برنامه‌نویس با بیش از 3 سال تجربه در زمینه طراحی و توسعه وب‌سایت‌های مدرن و ربات‌های تلگرامی.</p>
+          <p>تخصص من در طراحی رابط کاربری جذاب و تجربه کاربری عالی است. من به جزئیات اهمیت می‌دهم و همیشه سعی می‌کنم بهترین راه‌حل‌ها را برای پروژه‌های مشتریانم ارائه دهم.</p>
+          <p>اگر به دنبال یک وب‌سایت حرفه‌ای یا ربات تلگرامی قدرتمند هستید، خوشحال می‌شوم که در این مسیر همراه شما باشم.</p>
+          <a href="#contact" class="btn">تماس با من</a>
+        </div>
+        <div class="about-image">
+          <img src="https://cdn3d.iconscout.com/3d/premium/thumb/robot-say-hi-3d-icon-png-download-7746773.png?f=webp" alt="محمد جعفر افرازه">
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- نمونه کارها -->
+  <section id="projects" style="background: #f5f7fa;">
+    <div class="container">
+      <div class="section-title">
+        <h2>نمونه کارها</h2>
+      </div>
+      <div class="projects-grid">
+        <div class="project-card">
+          <div class="project-image">
+            <img src="https://www.onthemap.com/wp-content/uploads/2020/09/web-design-agency.jpg" alt="وب‌سایت شرکتی">
+          </div>
+          <div class="project-info">
+            <h3>وب‌سایت</h3>
+            <p>طراحی و توسعه وب‌سایت شرکتی با امکانات کامل و رابط کاربری مدرن</p>
+            <div class="project-tags">
+              <span>HTML/CSS</span>
+              <span>JavaScript</span>
+              <span>React</span>
+            </div>
+          </div>
+        </div>
+        
+        <div class="project-card">
+          <div class="project-image">
+            <img src="https://img.pikbest.com/wp/202346/ai-robot-in-thinking-mode-3d-rendered-image_9621336.jpg!w700wp" alt="ربات تلگرامی">
+          </div>
+          <div class="project-info">
+            <h3>ربات تلگرامی</h3>
+            <p>ربات تلگرامی برای مدیریت کانال و ارسال پیام‌های خودکار</p>
+            <div class="project-tags">
+              <span>Python</span>
+              <span>Telegram API</span>
+              <span>MySQL</span>
+            </div>
+          </div>
+        </div>
+        
+        <div class="project-card">
+          <div class="project-image">
+            <img src="https://lh3.googleusercontent.com/i5g07ZIxfRUi8sQuE7i5K0VZhNOmDGHzWuFHzRd2jJCcvjlTOVjk_WPI9VvCDGBycl_BRfykC_tcxBk-F0BYlWyZZfm_e3F6Deo2WNzFoh2FPrzv_g=w0-rwa-e366-v1" alt="اپلیکیشن موبایل">
+          </div>
+          <div class="project-info">
+            <h3>اپلیکیشن موبایل</h3>
+            <p>اپلیکیشن فروشگاهی برای سیستم‌های اندروید و iOS</p>
+            <div class="project-tags">
+              <span>React Native</span>
+              <span>Firebase</span>
+              <span>REST API</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- تماس با ما -->
+  <section id="contact">
+    <div class="container">
+      <div class="section-title">
+        <h2>تماس با ما</h2>
+      </div>
+      <div class="contact-container">
+        <div class="contact-info">
+          <div class="contact-item">
+            <div class="contact-icon">
+              <i class="fas fa-map-marker-alt"></i>
+            </div>
+            <div class="contact-details">
+              <h4>آدرس</h4>
+             <p>ایران, تهران</p>
+            </div>
+          </div>
+          
+          <div class="contact-item">
+            <div class="contact-icon">
+              <i class="fas fa-phone"></i>
+            </div>
+            <div class="contact-details">
+              <h4>تلفن</h4>
+              <p>فعلا امکانپذیر نیست</p>
+            </div>
+          </div>
+          
+          <div class="contact-item">
+            <div class="contact-icon">
+              <i class="fas fa-envelope"></i>
+            </div>
+            <div class="contact-details">
+              <h4>ایمیل</h4>
+              <p>technologyofpars.ir@gmail.com</p>
+            </div>
+          </div>
+          
+          <div class="contact-item">
+            <div class="contact-icon">
+              <i class="fab fa-telegram"></i>
+            </div>
+            <div class="contact-details">
+              <h4>تلگرام</h4>
+              <p>@tatsuhu</p>
+            </div>
+          </div>
+        </div>
+        
+
+        <div class="contact-item"></div>
+         </div>
+          </div>
+        </div>
+     
+  <!-- فروشگاه -->
+  <section id="shop" style="background: #f5f7fa;">
+    <div class="container">
+      <div class="section-title">
+        <h2>کارهایی که اکنون انجام میدیم در حوزه تکنولوژی</h2>
+      </div>
+      <div class="pricing-cards">
+        <div class="pricing-card">
+          <div class="pricing-header">
+            <h3>ai با پایتون</h3>
+            <div class="price">-<span>فعلا  موجود نیست</span></div>
+          </div>
+          <div class="pricing-features">
+            <ul>
+              <li><i class="fas fa-check"></i> طراحی فایل ربات در ترمینال</li>
+              <li><i class="fas fa-check"></i> طراحی ربات با زبان پایتون</li>
+              <li><i class="fas fa-check"></i> طراحی ربات با زبان جاوا</li>
+              <li><i class="fas fa-check"></i> استفاده از ربات های اوپن سورس در ترمینال</li>
+            </ul>
+          </div>
+          <div class="pricing-footer">
+            <a href="#" class="btn">سفارش دهید</a>
+          </div>
+        </div>
+        
+        <div class="pricing-card popular">
+          <div class="popular-badge">پکیج ویژه</div>
+          <div class="pricing-header">
+            <h3>پکیج حرفه‌ای</h3>
+            <div class="price">900 <span> هزار تومان</span></div>
+          </div>
+          <div class="pricing-features">
+            <ul>
+              <li><i class="fas fa-check"></i> طراحی وب‌سایت داینامیک</li>
+              <li><i class="fas fa-check"></i> پنل مدیریت</li>
+              <li><i class="fas fa-check"></i> طراحی ریسپانسیو</li>
+              <li><i class="fas fa-check"></i> سئو پایه</li>
+              <li><i class="fas fa-check"></i> پشتیبانی </li>
+              <li><i class="fas fa-check"></i> تحویل فوری نمیباشد</li>
+            </ul>
+          </div>
+          <div class="pricing-footer">
+            <a href="https://t.me/tatsuhu" class="btn">سفارش دهید</a>
+          </div>
+        </div>
+        
+        <div class="pricing-card">
+          <div class="pricing-header">
+            <h3> ربات تلگرام</h3>
+            <div class="price">150<span>هزار تومان</span></div>
+          </div>
+          <div class="pricing-features">
+            <ul>
+              <li><i class="fas fa-check"></i> طراحی ربات تلگرام</li>
+              <li><i class="fas fa-check"></i> دیتابیس و مدیریت کاربران</li>
+              <li><i class="fas fa-check"></i> ربات ساده </li>
+              <li><i class="fas fa-check"></i> ن.شته شده با زبان جاوااسکریپت و پایتون</li>
+              <li><i class="fas fa-check"></i> پشتیبانی </li>
+               <li><i class="fas fa-check"></i> تحویل فوری نمیباشد</li>
+            </ul>
+          </div>
+          <div class="pricing-footer">
+            <a href="https://t.me/tatsuhu" class="btn">سفارش دهید</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- فوتر -->
+  <footer>
+    <div class="container">
+      <div class="footer-content">
+        <div class="footer-section">
+          <h4>دسترسی سریع</h4>
+          <a href="#about">درباره من</a>
+          
+          <a href="https://t.me/tatsuhu">تماس با من</a>
+          
+          <a href="https://t.me/tatsuhu">مشکلات و نظریات سایت</a>
+        </div>
+        <div class="footer-section">
+          <h4>ارتباط با من</h4>
+          <a href="https://t.me/tatsuhu">ارتباط با سازنده سایت</a>
+         
+          <a href="https://t.me/tech_parsa">کانال تلگرام</a>
+          <a href="https://www.youtube.com/@TheGreatMathematician">یوتیوب</a>
+         
+        </div>
+        <div class="footer-section">
+          <h4>خدمات</h4>
+         
+          <a href="https//:t.me?tech_parsa">پکیج‌های آماده</a>
+          <a href="https://t.me/tatsuhu">مشاوره</a>
+        </div>
+      </div>
+      
+      <p>
+        طراحی و توسعه: تیم تک پارسا
+        <img src="https://upload.wikimedia.org/wikipedia/commons/e/e4/Twitter_Verified_Badge.svg" 
+             alt="تیک آبی" class="verify-icon">
+        — 
+        محمد جعفر افرازه
+        <img src="https://upload.wikimedia.org/wikipedia/commons/e/e4/Twitter_Verified_Badge.svg" 
+             alt="تیک آبی" class="verify-icon">
+      </p>
+      
+      <p>تمامی حقوق برای تک پارسا(محمد جعفر افرازه) محفوظ است</p>
+      
+      <div class="socials">
+        <a href="https://t.me/Tech_parsa" target="_blank"><i class="fa-brands fa-telegram"></i></a>
+        <a href="https://www.youtube.com/@TheGreatMathematician" target="_blank"><i class="fa-brands fa-youtube"></i></a>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // جستجو
+    document.querySelector('.search-box').addEventListener('input', function() {
+      const searchTerm = this.value.toLowerCase();
+      const resultsContainer = document.getElementById('searchResults');
+      
+      if (searchTerm.length > 2) {
+        // شبیه‌سازی نتایج جستجو
+        const results = [
+          'درباره تک پارسا',
+          'نمونه کارهای طراحی سایت',
+          'ربات تلگرامی سفارشی',
+          'پکیج‌های خدمات',
+          'تماس با ما'
+        ].filter(item => item.toLowerCase().includes(searchTerm));
+        
+        resultsContainer.innerHTML = '';
+        results.forEach(result => {
+          const link = document.createElement('a');
+          link.href = '#';
+          link.textContent = result;
+          resultsContainer.appendChild(link);
+        });
+        
+        resultsContainer.classList.add('active');
+      } else {
+        resultsContainer.classList.remove('active');
+      }
+    });
+    
+   
+    
+    // منوی موبایل
+    document.getElementById('menuBtn').addEventListener('click', function(e) {
+      e.preventDefault();
+      const nav = document.querySelector('nav ul');
+      nav.classList.toggle('mobile-active');
+    });
+  </script>
+</body>
+</html>
